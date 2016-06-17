@@ -26,3 +26,4 @@ Here's how to run the test suite:
 
 [![Stories in Ready](https://badge.waffle.io/Brax94/gowebserver.png?label=ready&title=Ready)](http://waffle.io/Brax94/gowebserver)
 test builder
+test her og
