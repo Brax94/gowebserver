@@ -18,7 +18,7 @@ job("0.Pretest") {
         name('origin')
         url("${REPO_URL}")
       }
-      branch('master')
+      branch('*/ready/**')
       configure {
       }
     }
