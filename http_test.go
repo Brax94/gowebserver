@@ -71,7 +71,7 @@ func TestRomanThree(t *T)
 	body := w.Body.String()
 	if body != fmt.Sprintf("Here's your number: III\n")
 	{
-		t.Fatalf("wring body returned yaman: %s", body)
+		t.Fatalf("wring body returned: %s", body)
 	}
 }
 
@@ -87,6 +87,6 @@ func TestRomanFinnish(t *T)
 	body := w.Body.String()
 	if body != fmt.Sprintf("Here's your number: IIII\n")
 	{
-		t.Fatalf("wring body returned yaman: %s", body)
+		t.Fatalf("wring body returned: %s", body)
 	}
 }
