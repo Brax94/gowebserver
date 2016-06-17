@@ -42,6 +42,18 @@ func (p *Page) save() error {
     filename := p.Title + ".txt"
     return ioutil.WriteFile(filename, p.Body, 0600)
 }
+<<<<<<< 61d9645b1a2208ea5ceadcc01c6361972cd2e29d
+
+func loadPage(title string) (*Page, error) {
+    filename := title + ".txt"
+    body, err := ioutil.ReadFile(filename)
+    if err != nil {
+        return nil, err
+    }
+    return &Page{Title: title, Body: body}, nil
+}
+=======
+>>>>>>> Create simple input interface
 
 func loadPage(title string) (*Page, error) {
     filename := title + ".txt"
@@ -52,6 +64,31 @@ func loadPage(title string) (*Page, error) {
     return &Page{Title: title, Body: body}, nil
 }
 
+<<<<<<< 61d9645b1a2208ea5ceadcc01c6361972cd2e29d
+func inputHandler(w http.ResponseWriter, r *http.Request) {
+    title := r.URL.Path[len("/input/"):]
+    p, err := loadPage(title)
+    if err != nil {
+        p = &Page{Title: title}
+    }
+    t, _ := template.ParseFiles("ui.html")
+    t.Execute(w, p)
+}
+
+func convertHandler(w http.ResponseWriter, r *http.Request){
+    number := r.FormValue("quantity")
+    http.Redirect(w, r, "/roman/" + number, http.StatusFound)
+}
+
+
+
+func main() {
+    http.Handle("/roman/", romanGenerator(1))
+    http.HandleFunc("/", hello)
+    http.HandleFunc("/input/", inputHandler)
+    http.HandleFunc("/convert/", convertHandler)
+
+=======
 
 func inputHandler(w http.ResponseWriter, r *http.Request) {
     title := r.URL.Path[len("/input/"):]
@@ -76,6 +113,7 @@ func main() {
     http.HandleFunc("/input/", inputHandler)
     http.HandleFunc("/convert/", convertHandler)
 
+>>>>>>> Create simple input interface
     err := http.ListenAndServe(":8000", nil)
     log.Fatal(err)
 }
