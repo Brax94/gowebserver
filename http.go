@@ -6,6 +6,8 @@ import (
     "log"
     "net/http"
     "strconv"
+    "html/template"
+    "io/ioutil"
 )
 
 func hello(w http.ResponseWriter, r *http.Request) {
@@ -32,14 +34,48 @@ func (n romanGenerator) ServeHTTP(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "Here's your number: %s\n", to_roman(i))
 }
 
+type Page struct {
+    Title string
+    Body  []byte
+}
+func (p *Page) save() error {
+    filename := p.Title + ".txt"
+    return ioutil.WriteFile(filename, p.Body, 0600)
+}
+
+func loadPage(title string) (*Page, error) {
+    filename := title + ".txt"
+    body, err := ioutil.ReadFile(filename)
+    if err != nil {
+        return nil, err
+    }
+    return &Page{Title: title, Body: body}, nil
+}
+
+
+func inputHandler(w http.ResponseWriter, r *http.Request) {
+    title := r.URL.Path[len("/input/"):]
+    p, err := loadPage(title)
+    if err != nil {
+        p = &Page{Title: title}
+    }
+    t, _ := template.ParseFiles("ui.html")
+    t.Execute(w, p)
+}
+
+func convertHandler(w http.ResponseWriter, r *http.Request){
+    number := r.FormValue("quantity")
+    http.Redirect(w, r, "/roman/" + number, http.StatusFound)
+}
+
 
 
 func main() {
-    h := http.NewServeMux()
+    http.Handle("/roman/", romanGenerator(1))
+    http.HandleFunc("/", hello)
+    http.HandleFunc("/input/", inputHandler)
+    http.HandleFunc("/convert/", convertHandler)
 
-    h.Handle("/roman/", romanGenerator(1))
-    h.HandleFunc("/", hello)
-
-    err := http.ListenAndServe(":8000", h)
+    err := http.ListenAndServe(":8000", nil)
     log.Fatal(err)
 }
