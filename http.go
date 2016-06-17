@@ -16,8 +16,7 @@ func hello(w http.ResponseWriter, r *http.Request) {
 
 func to_roman(n int)  string {
     var s string
-	while (n > 0 && n < 4)
-	{
+	for (n > 0 && n < 4) {
 		s = s + "I"
 		n = n - 1
 	}

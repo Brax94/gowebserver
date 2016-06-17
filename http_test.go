@@ -59,8 +59,7 @@ func TestRomanTwo(t *T) {
 
 }
 
-func TestRomanThree(t *T)
-{
+func TestRomanThree(t *T) {
 	n := romanGenerator(1)
     r, _ := http.NewRequest("GET", "/roman/2", nil)
     w := httptest.NewRecorder()
