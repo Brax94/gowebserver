@@ -25,4 +25,4 @@ Here's how to run the test suite:
     docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.6 go test -v
 
 [![Stories in Ready](https://badge.waffle.io/Brax94/gowebserver.png?label=ready&title=Ready)](http://waffle.io/Brax94/gowebserver)
-test build
+test builder
