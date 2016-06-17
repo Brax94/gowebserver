@@ -9,6 +9,69 @@ REPO_URL="https://github.com/${GITHUB_USERNAME}/gowebserver.git"
 // Configured to use to define the build pipeline as well
 FIRST_JOB_NAME="1.build-${PROJ_NAME}_GEN"
 
+
+job("0.Pretest") {
+  logRotator( -1, 5 ,-1 ,-1 )
+  scm {
+    git {
+      remote {
+        name('origin')
+        url("${REPO_URL}")
+      }
+      branch('master')
+      configure {
+      }
+    }
+  }
+  properties {
+    environmentVariables {
+      keepSystemVariables(true)
+      keepBuildVariables(true)
+      env('GITHUB_USERNAME', "${GITHUB_USERNAME}")
+    }
+  }
+  triggers {
+    scm('* * * * *')
+  }
+  steps{
+    shell('''
+echo "version=\$(cat version.txt)" > props.env
+
+sudo docker build --no-cache -t ${GITHUB_USERNAME}/http-app:snapshot .
+
+imageid=$(sudo docker images | grep ${GITHUB_USERNAME}/http-app | grep snapshot | awk '{print $3}')
+
+cid=$(sudo docker ps --filter="name=testing-app" -q -a)
+if [ ! -z "$cid" ]
+then
+sudo docker rm -f testing-app
+fi
+
+cid=$(sudo docker run -d --name testing-app -p 8001:8000 ${GITHUB_USERNAME}/http-app:snapshot)
+echo "cid=$cid" >> props.env
+echo "IMAGEID=$imageid" >> props.env
+cat props.env
+cip=$(sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${cid})
+sudo docker run --rm rufus/siege-engine -g http://$cip:8000/
+[ $? -ne 0 ] && exit 1
+sudo docker kill ${cid}
+sudo docker rm ${cid}''')
+  }
+  wrappers {
+    pretestedIntegration("SQUASHED","master","origin")
+  }
+  publishers {
+    pretestedIntegration()
+  }
+}
+
+
+
+
+
+
+
+
 job("${FIRST_JOB_NAME}") {
   logRotator( -1, 5 ,-1 ,-1 )
   scm {
@@ -19,12 +82,6 @@ job("${FIRST_JOB_NAME}") {
       }
       branch('master')
       configure {
-        it / 'extensions' << 'hudson.plugins.git.extensions.impl.PathRestriction' {
-          'includedRegions' '''GoWebServer/.*\\.go
-GoWebServer/.*\\.html
-GoWebServer/.*\\.png
-version\\.txt'''
-        }
       }
     }
   }
