@@ -62,7 +62,7 @@ func TestRomanTwo(t *T) {
 func TestRomanThree(t *T)
 {
 	n := romanGenerator(1)
-    r, _ := http.NewRequest("GET", "/roman/2", nil)
+    r, _ := http.NewRequest("GET", "/roman/3", nil)
     w := httptest.NewRecorder()
     n.ServeHTTP(w, r)
     if w.Code != 200 {
@@ -70,6 +70,22 @@ func TestRomanThree(t *T)
     }
 	body := w.Body.String()
 	if body != fmt.Sprintf("Here's your number: III\n")
+	{
+		t.Fatalf("wring body returned yaman: %s", body)
+	}
+}
+
+func TestRomanFinnish(t *T)
+{
+	n := romanGenerator(1)
+    r, _ := http.NewRequest("GET", "/roman/4", nil)
+    w := httptest.NewRecorder()
+    n.ServeHTTP(w, r)
+    if w.Code != 200 {
+        t.Fatalf("wrong code returned: %d", w.Code)
+    }
+	body := w.Body.String()
+	if body != fmt.Sprintf("Here's your number: IIII\n")
 	{
 		t.Fatalf("wring body returned yaman: %s", body)
 	}
