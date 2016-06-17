@@ -15,13 +15,13 @@ func hello(w http.ResponseWriter, r *http.Request) {
 }
 
 func to_roman(n int)  string {
-    if n == 2 {
-        return "II"
-    }
-	if n == 3 {
-		return "III"
+    var s string
+	while (n > 0 && n < 4)
+	{
+		s = s + "I"
+		n = n - 1
 	}
-    return "I"
+	return s
 }
 
 type romanGenerator int
