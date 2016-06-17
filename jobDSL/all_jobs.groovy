@@ -17,7 +17,7 @@ job("${FIRST_JOB_NAME}") {
         name('origin')
         url("${REPO_URL}")
       }
-      branch('')
+      branch('master')
       configure {
         it / 'extensions' << 'hudson.plugins.git.extensions.impl.PathRestriction' {
           'includedRegions' '''GoWebServer/.*\\.go
