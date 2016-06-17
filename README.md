@@ -1,3 +1,9 @@
+[![Stories in Ready](https://badge.waffle.io/gowebserver/gowebserver.png?label=ready&title=Ready)](https://waffle.io/gowebserver/gowebserver)
+[![Stories in Ready](https://badge.waffle.io/Brax94/gowebserver.png?label=ready&title=Ready)](https://waffle.io/Brax94/gowebserver)
+[![Stories in Ready](https://badge.waffle.io/Brax94/gowebserver.png?label=ready&title=Ready)](https://waffle.io/Brax94/gowebserver)
+[![Stories in Ready](https://badge.waffle.io/Brax94/gowebserver.png?label=ready&title=Ready)](https://waffle.io/Brax94/gowebserver)
+[![Stories in Ready](https://badge.waffle.io/Brax94/gowebserver.png?label=ready&title=Ready)](https://waffle.io/Brax94/gowebserver)
+[![Stories in Ready](https://badge.waffle.io/Brax94/gowebserver.png?label=ready&title=Ready)](https://waffle.io/Brax94/gowebserver)
 Run the follwing command to run the simple web server:
 $ go run http.go  
 
